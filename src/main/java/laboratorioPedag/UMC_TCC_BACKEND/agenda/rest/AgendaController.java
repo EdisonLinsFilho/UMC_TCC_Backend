@@ -2,20 +2,24 @@ package laboratorioPedag.UMC_TCC_BACKEND.agenda.rest;
 
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.dal.AgendaRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.model.Agenda;
+import laboratorioPedag.UMC_TCC_BACKEND.agenda.service.AgendaService;
 import org.apache.commons.lang3.Validate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import java.util.*;
-import static java.util.Optional.ofNullable;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
+
+@RestController
+@RequestMapping("/api/v1/agenda")
 public class AgendaController {
 
     private AgendaRepository agendaRepository;
+    private AgendaService agendaService;
 
 
-    public AgendaController(AgendaRepository agendaRepository) {
+
+    public AgendaController(AgendaRepository agendaRepository, AgendaService agendaService) {
         this.agendaRepository = agendaRepository;
+        this.agendaService = agendaService;
     }
 
     @GetMapping("/getAll")
@@ -33,25 +37,11 @@ public class AgendaController {
             return newAgenda;
         }
 
-        Agenda agenda = agendaRepository.findById(newAgenda.getId()).orElse(null);
-
-        ofNullable(newAgenda.getCoordenator()).ifPresent(agenda :: setCoordenator);
-        agenda.setCoordenator(newAgenda.getCoordenator());
-        agenda.setMonitor(newAgenda.getMonitor());
-        agenda.setProfessor(newAgenda.getProfessor());
-        agenda.setEscola(newAgenda.getEscola());
-        agenda.setCriancas(newAgenda.getCriancas());
-        agenda.setTipoEnsino(newAgenda.getTipoEnsino());
-        agenda.setResposaveis(newAgenda.getResposaveis());
-        agenda.setMateriais(newAgenda.getMateriais());
-        agenda.setData(newAgenda.getData());
-        agenda.setDescricao(newAgenda.getDescricao());
-
-        return agendaRepository.save(agenda);
+        return agendaService.updateAgenda(newAgenda);
     }
 
     @GetMapping
-    public Agenda get(Long agendaId) {
+    public Agenda get(@RequestParam Long agendaId) {
         Validate.notNull(agendaId,"Id da agenda não pode ser nulo");
         return agendaRepository.findById(agendaId).orElse(null);
     }
