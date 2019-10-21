@@ -40,8 +40,8 @@ public class AgendaController {
         return agendaService.updateAgenda(newAgenda);
     }
 
-    @GetMapping
-    public Agenda get(@RequestParam Long agendaId) {
+    @GetMapping("/{agendaId}")
+    public Agenda get(@PathVariable Long agendaId) {
         Validate.notNull(agendaId,"Id da agenda não pode ser nulo");
         return agendaRepository.findById(agendaId).orElse(null);
     }
