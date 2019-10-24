@@ -16,7 +16,7 @@ public class AgendaService {
         this.agendaRepository = agendaRepository;
     }
 
-    public Agenda updateAgenda(@RequestBody Agenda newAgenda) {
+    public Agenda updateAgenda(Agenda newAgenda) {
         Agenda agenda = agendaRepository.findById(newAgenda.getId()).orElse(null);
 
         ofNullable(newAgenda.getCoordenator()).ifPresent(agenda :: setCoordenator);
