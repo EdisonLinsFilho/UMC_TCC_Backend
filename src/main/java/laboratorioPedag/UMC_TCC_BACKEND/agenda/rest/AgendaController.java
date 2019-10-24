@@ -42,7 +42,7 @@ public class AgendaController {
 
     @GetMapping
     public Agenda get(@RequestParam Long agendaId) {
-        Validate.notNull(agendaId,"Id da agenda não pode ser nulo");
+         Validate.notNull(agendaId,"Id da agenda não pode ser nulo");
         return agendaRepository.findById(agendaId).orElse(null);
     }
 }
