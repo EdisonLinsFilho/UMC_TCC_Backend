@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/api/v1/agenda")
 public class AgendaController {
 
@@ -40,9 +41,9 @@ public class AgendaController {
         return agendaService.updateAgenda(newAgenda);
     }
 
-    @GetMapping
-    public Agenda get(@RequestParam Long agendaId) {
-         Validate.notNull(agendaId,"Id da agenda não pode ser nulo");
+    @GetMapping("/{agendaId}")
+    public Agenda get(@PathVariable Long agendaId) {
+        Validate.notNull(agendaId,"Id da agenda não pode ser nulo");
         return agendaRepository.findById(agendaId).orElse(null);
     }
 }
