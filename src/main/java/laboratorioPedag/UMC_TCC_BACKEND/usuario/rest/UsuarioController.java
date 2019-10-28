@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api/v1/usuario")
 public class UsuarioController {
@@ -26,7 +27,20 @@ public class UsuarioController {
         return usuarios;
     }
 
-    @PostMapping
+    @GetMapping("/getByName/{name}")
+    public List<Usuario> getName(@PathVariable String name){
+        List<Usuario> usuarios = usuarioRepository.findAllByNomeContains(name);
+        return usuarios;
+    }
+
+    @GetMapping("/getByRgm/{rgm}")
+    public List<Usuario> getByRgm(@PathVariable String rgm){
+        double RGM = Double.parseDouble(rgm);
+        List<Usuario> usuarios = usuarioRepository.findByRgm(RGM);
+        return usuarios;
+    }
+
+    @PostMapping("/saveOrUpdate")
     public Usuario saveOrUpdate(@RequestBody Usuario newUsuario) {
         Validate.notNull(newUsuario, "O objeto do usuario não pode ser nulo");
 
@@ -42,5 +56,11 @@ public class UsuarioController {
     public Usuario get(@PathVariable("usuarioId") Long usuarioId) {
         Validate.notNull(usuarioId,"Id do usuario não pode ser nulo");
         return usuarioRepository.findById(usuarioId).orElse(null);
+    }
+
+    @PostMapping("/delete")
+    public Usuario deleteUser(@RequestBody Usuario userDelete){
+        Validate.notNull(userDelete, "O objeto de usuario não pode ser nulo");
+        return usuarioService.deleteUsuario(userDelete);
     }
 }
