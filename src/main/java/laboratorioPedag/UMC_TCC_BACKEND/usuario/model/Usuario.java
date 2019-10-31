@@ -2,7 +2,9 @@ package laboratorioPedag.UMC_TCC_BACKEND.usuario.model;
 
 
 import lombok.Data;
+import lombok.NonNull;
 import org.apache.tomcat.util.net.SSLHostConfig;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,10 +21,16 @@ public class Usuario implements Serializable {
     private Long id;
 
     private String nome;
+    @Enumerated(EnumType.STRING)
     private Acesso acesso;
+    @Enumerated(EnumType.STRING)
     private Status status;
+    @NonNull
+    @UniqueElements
     private String email;
+    @NonNull
     private String senha;
+    @NonNull
     private double rgm;
 
 }
