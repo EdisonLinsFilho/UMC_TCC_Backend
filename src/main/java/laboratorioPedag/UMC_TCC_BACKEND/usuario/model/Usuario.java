@@ -31,6 +31,6 @@ public class Usuario implements Serializable {
     @NonNull
     private String senha;
     @NonNull
-    private double rgm;
+    private Long rgm;
 
 }
