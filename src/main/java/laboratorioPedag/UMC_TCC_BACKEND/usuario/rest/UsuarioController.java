@@ -63,4 +63,15 @@ public class UsuarioController {
         Validate.notNull(userDelete, "O objeto de usuario não pode ser nulo");
         return usuarioService.deleteUsuario(userDelete);
     }
+
+    @GetMapping("/authenticate")
+    public Usuario authenticate(@RequestParam String email, @RequestParam String senha) {
+        Validate.notNull(email, "Email não pode ser nulo");
+        Validate.notNull(senha, "Senha não pode ser nula");
+        Usuario usuario = usuarioService.authenticate(email, senha);
+        if (usuario == null){
+            return null;
+        }
+        return usuario;
+    }
 }

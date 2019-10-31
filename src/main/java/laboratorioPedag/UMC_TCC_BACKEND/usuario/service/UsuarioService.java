@@ -2,11 +2,13 @@ package laboratorioPedag.UMC_TCC_BACKEND.usuario.service;
 
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.dal.UsuarioRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.model.Usuario;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import static java.util.Optional.ofNullable;
 
+@Slf4j
 @Service
 public class UsuarioService {
 
@@ -33,5 +35,21 @@ public class UsuarioService {
         usuario.setStatus(Usuario.Status.INACTIVE);
 
         return usuarioRepository.save(usuario);
+    }
+
+    public Usuario authenticate(String email, String senha) {
+        if (usuarioRepository.findByEmail(email) == null) {
+            log.error("Usuario não encontrado");
+            return null;
+        }
+
+        Usuario usuario = usuarioRepository.findByEmail(email);
+
+        if (!usuario.getSenha().equals(senha)) {
+            log.error("Senha incorreta");
+            return null;
+        }
+
+        return usuario;
     }
 }
