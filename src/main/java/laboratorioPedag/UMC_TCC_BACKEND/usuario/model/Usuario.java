@@ -7,6 +7,7 @@ import org.apache.tomcat.util.net.SSLHostConfig;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
@@ -25,12 +26,13 @@ public class Usuario implements Serializable {
     private Acesso acesso;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @NonNull
-    @UniqueElements
+    @NotNull
+    @Column(unique = true)
     private String email;
-    @NonNull
+    @NotNull
     private String senha;
-    @NonNull
+    @NotNull
+    @Column(unique = true)
     private Long rgm;
 
 }

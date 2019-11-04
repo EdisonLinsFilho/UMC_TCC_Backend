@@ -1,11 +1,10 @@
 package laboratorioPedag.UMC_TCC_BACKEND.material.model;
 
 import lombok.Data;
+import org.springframework.lang.NonNull;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -45,11 +44,15 @@ public class Material {
     private String descricao;
 
     private double quantidade;
+    @NotNull
     private double quantidadeMinima;
     private Long dataLancamento;
 
+    @Enumerated(EnumType.STRING)
     private Classe classe;
+    @Enumerated(EnumType.STRING)
     private Categoria categoria;
+    @Enumerated(EnumType.STRING)
     private Embalagem embalagem;
 
 }
