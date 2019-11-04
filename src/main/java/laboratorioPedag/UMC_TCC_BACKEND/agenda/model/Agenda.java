@@ -29,6 +29,7 @@ public class Agenda implements Serializable {
 
     private String escola;
     private Long criancas;
+    @Enumerated(EnumType.STRING)
     private Ensino tipoEnsino;
 
     @ManyToMany
