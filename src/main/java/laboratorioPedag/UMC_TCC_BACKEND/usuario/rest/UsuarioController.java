@@ -1,6 +1,8 @@
 package laboratorioPedag.UMC_TCC_BACKEND.usuario.rest;
 
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.dal.UsuarioRepository;
+import laboratorioPedag.UMC_TCC_BACKEND.usuario.dto.LoginDto;
+import laboratorioPedag.UMC_TCC_BACKEND.usuario.dto.UsuarioSimplesDto;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.model.Usuario;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.service.UsuarioService;
 import org.apache.commons.lang3.Validate;
@@ -64,11 +66,11 @@ public class UsuarioController {
         return usuarioService.deleteUsuario(userDelete);
     }
 
-    @GetMapping("/authenticate")
-    public Usuario authenticate(@RequestParam String email, @RequestParam String senha) {
-        Validate.notNull(email, "Email não pode ser nulo");
-        Validate.notNull(senha, "Senha não pode ser nula");
-        Usuario usuario = usuarioService.authenticate(email, senha);
+    @PostMapping("/authenticate")
+    public UsuarioSimplesDto authenticate(@RequestBody LoginDto login) {
+        Validate.notNull(login.getEmail(), "Email não pode ser nulo");
+        Validate.notNull(login.getSenha(), "Senha não pode ser nula");
+        UsuarioSimplesDto usuario = usuarioService.authenticate(login.getEmail(), login.getSenha());
         if (usuario == null){
             return null;
         }

@@ -1,6 +1,7 @@
 package laboratorioPedag.UMC_TCC_BACKEND.usuario.service;
 
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.dal.UsuarioRepository;
+import laboratorioPedag.UMC_TCC_BACKEND.usuario.dto.UsuarioSimplesDto;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.model.Usuario;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario authenticate(String email, String senha) {
+    public UsuarioSimplesDto authenticate(String email, String senha) {
         if (usuarioRepository.findByEmail(email) == null) {
             log.error("Usuario não encontrado");
             return null;
@@ -50,6 +51,7 @@ public class UsuarioService {
             return null;
         }
 
-        return usuario;
+        UsuarioSimplesDto usuarioSimples = new UsuarioSimplesDto(usuario);
+        return usuarioSimples;
     }
 }
