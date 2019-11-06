@@ -67,12 +67,12 @@ public class UsuarioController {
     }
 
     @PostMapping("/authenticate")
-    public UsuarioSimplesDto authenticate(@RequestBody LoginDto login) {
+    public UsuarioSimplesDto authenticate(@RequestBody LoginDto login) throws Exception {
         Validate.notNull(login.getEmail(), "Email não pode ser nulo");
         Validate.notNull(login.getSenha(), "Senha não pode ser nula");
         UsuarioSimplesDto usuario = usuarioService.authenticate(login.getEmail(), login.getSenha());
         if (usuario == null){
-            return null;
+            throw new Exception("Usuario não encontrado");
         }
         return usuario;
     }

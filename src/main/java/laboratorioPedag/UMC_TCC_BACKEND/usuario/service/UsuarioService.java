@@ -38,17 +38,15 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public UsuarioSimplesDto authenticate(String email, String senha) {
+    public UsuarioSimplesDto authenticate(String email, String senha) throws Exception {
         if (usuarioRepository.findByEmail(email) == null) {
-            log.error("Usuario não encontrado");
-            return null;
+            throw new Exception("Usuario não encontrado");
         }
 
         Usuario usuario = usuarioRepository.findByEmail(email);
 
         if (!usuario.getSenha().equals(senha)) {
-            log.error("Senha incorreta");
-            return null;
+            throw new Exception("Senha incorreta");
         }
 
         UsuarioSimplesDto usuarioSimples = new UsuarioSimplesDto(usuario);
