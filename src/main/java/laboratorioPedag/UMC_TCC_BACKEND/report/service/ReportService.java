@@ -97,21 +97,24 @@ public class ReportService {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet();
         Row rowTop = sheet.createRow(rowNum);
-        rowTop.createCell(0).setCellValue("");
-        rowTop.createCell(1).setCellValue("");
-        rowTop.createCell(2).setCellValue("");
-        rowTop.createCell(3).setCellValue("");
-        rowTop.createCell(4).setCellValue("");
-        rowTop.createCell(5).setCellValue("");
+        rowTop.createCell(0).setCellValue("Nome: ");
+        rowTop.createCell(1).setCellValue("RGM: ");
+        rowTop.createCell(2).setCellValue("Email: ");
+        rowTop.createCell(3).setCellValue("Status: ");
+        rowTop.createCell(4).setCellValue("Nível de Acesso: ");
 
         rowNum++;
 
         for (Usuario usuario : usuarios){
             Row row = sheet.createRow(rowNum);
-            row.createCell(1).setCellValue();
-
+            row.createCell(0).setCellValue(usuario.getNome() != null ? usuario.getNome() : "");
+            row.createCell(1).setCellValue(usuario.getRgm() != null ? usuario.getRgm().toString() : "");
+            row.createCell(2).setCellValue(usuario.getEmail() != null ? usuario.getEmail() : "");
+            row.createCell(3).setCellValue(usuario.getStatus() != null ? usuario.getStatus().toString() : "");
+            row.createCell(4).setCellValue(usuario.getAcesso() != null ? usuario.getAcesso().toString() : "");
             rowNum++;
         }
+        return workbook;
     }
 
 
