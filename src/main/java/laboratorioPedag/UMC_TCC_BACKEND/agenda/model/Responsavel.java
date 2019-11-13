@@ -15,5 +15,5 @@ public class Responsavel {
     @NotNull
     @Column(unique = true)
     private String rg;
-    private String name;
+    private String nome;
 }

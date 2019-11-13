@@ -43,6 +43,7 @@ public class Material {
     private String nome;
     private String descricao;
 
+    @NotNull
     private double quantidade;
     @NotNull
     private double quantidadeMinima;
@@ -55,4 +56,8 @@ public class Material {
     @Enumerated(EnumType.STRING)
     private Embalagem embalagem;
 
+    @Override
+    public String toString() {
+        return nome;
+    }
 }
