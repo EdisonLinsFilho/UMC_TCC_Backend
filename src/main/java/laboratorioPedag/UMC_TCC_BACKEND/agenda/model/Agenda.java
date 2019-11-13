@@ -14,7 +14,10 @@ public class Agenda implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public enum Ensino{FUNDAMENTAL, PRIMARIO}
+    public enum Ensino {
+        FUNDAMENTAL,
+        PRIMARIO;
+    }
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
