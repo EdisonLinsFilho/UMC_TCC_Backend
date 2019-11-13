@@ -16,4 +16,7 @@ public class Responsavel {
     @Column(unique = true)
     private String rg;
     private String nome;
+    @NotNull
+    @Column(unique = true)
+    private String email;
 }
