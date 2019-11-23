@@ -19,6 +19,11 @@ public class Agenda implements Serializable {
         PRIMARIO;
     }
 
+    public enum Status {
+        PRONTO,
+        PENDENTE
+    }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -34,6 +39,9 @@ public class Agenda implements Serializable {
     private Long criancas;
     @Enumerated(EnumType.STRING)
     private Ensino tipoEnsino;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToMany
     private List<Responsavel> resposaveis;

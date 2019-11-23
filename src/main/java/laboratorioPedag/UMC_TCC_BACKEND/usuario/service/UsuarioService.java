@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 import static java.util.Optional.ofNullable;
 
 @Slf4j
@@ -51,5 +53,17 @@ public class UsuarioService {
 
         UsuarioSimplesDto usuarioSimples = new UsuarioSimplesDto(usuario);
         return usuarioSimples;
+    }
+
+    public boolean verificacaoDeCamposDuplicados(Usuario newUsuario) throws Exception{
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        for (Usuario usuario : usuarios){
+            if (usuario.getRgm().equals(newUsuario.getRgm())){
+                throw new Exception("RGM Duplicado não será permitido.");
+            }else if (usuario.getEmail().equals(newUsuario.getEmail())){
+                throw new Exception("Email Duplicado não será permitido.");
+            }
+        }
+        return true;
     }
 }

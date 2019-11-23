@@ -43,10 +43,11 @@ public class UsuarioController {
     }
 
     @PostMapping("/saveOrUpdate")
-    public Usuario saveOrUpdate(@RequestBody Usuario newUsuario) {
+    public Usuario saveOrUpdate(@RequestBody Usuario newUsuario) throws Exception {
         Validate.notNull(newUsuario, "O objeto do usuario não pode ser nulo");
 
         if (newUsuario.getId() == null) {
+            usuarioService.verificacaoDeCamposDuplicados(newUsuario);
             usuarioRepository.save(newUsuario);
             return newUsuario;
         }

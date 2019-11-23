@@ -10,4 +10,7 @@ import java.util.List;
 public interface AgendaRepository extends JpaRepository<Agenda, Long> {
     @Query(value = "select a.* from agenda a where a.data between :startDate and :endDate", nativeQuery = true)
     List<Agenda> findAllByDateRange(@Param("startDate") Long startDate, @Param("endDate") Long endDate);
+
+    @Query(value = "select data from Agenda")
+    List<Long> findAllDatas();
 }

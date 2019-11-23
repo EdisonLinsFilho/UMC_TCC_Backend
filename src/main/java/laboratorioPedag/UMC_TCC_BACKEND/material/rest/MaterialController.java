@@ -6,6 +6,7 @@ import laboratorioPedag.UMC_TCC_BACKEND.material.service.MaterialService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -29,8 +30,8 @@ public class MaterialController {
     @PostMapping
     public Material saveOrUpdate(@RequestBody Material newMaterial) {
         Validate.notNull(newMaterial, "O objeto da agenda não pode ser nulo");
-
         if (newMaterial.getId() == null) {
+            newMaterial.setDataLancamento(new Date().getTime());
             materialRepository.save(newMaterial);
             return newMaterial;
         }

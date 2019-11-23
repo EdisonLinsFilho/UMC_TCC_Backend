@@ -30,9 +30,14 @@ public class AgendaController {
     }
 
     @PostMapping
-    public Agenda saveOrUpdate(@RequestBody Agenda newAgenda) {
+    public Agenda saveOrUpdate(@RequestBody Agenda newAgenda)throws Exception {
         Validate.notNull(newAgenda, "O objeto da agenda não pode ser nulo");
+        Long now = new Date().getTime();
+        if (newAgenda.getData() <= now){
+            throw new Exception("Data invalida");
+        }
 
+        //TODO tornar esta verificação performatica
         if (newAgenda.getId() == null) {
             agendaRepository.save(newAgenda);
             return newAgenda;
