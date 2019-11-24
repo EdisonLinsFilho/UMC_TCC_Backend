@@ -10,6 +10,7 @@ public class UsuarioSimplesDto {
     private Usuario.Acesso acesso;
     private Usuario.Status status;
     private Long rgm;
+    private String email;
 
     public UsuarioSimplesDto(Usuario usuario){
         this.id = usuario.getId();
@@ -17,5 +18,6 @@ public class UsuarioSimplesDto {
         this.nome = usuario.getNome();
         this.status = usuario.getStatus();
         this.rgm = usuario.getRgm();
+        this.email = usuario.getEmail();
     }
 }

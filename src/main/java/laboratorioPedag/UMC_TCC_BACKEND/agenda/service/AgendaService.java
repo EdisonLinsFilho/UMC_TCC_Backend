@@ -2,11 +2,13 @@ package laboratorioPedag.UMC_TCC_BACKEND.agenda.service;
 
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.dal.AgendaRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.model.Agenda;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import static java.util.Optional.ofNullable;
 
+@Slf4j
 @Service
 public class AgendaService {
 

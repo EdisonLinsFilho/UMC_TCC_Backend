@@ -14,7 +14,7 @@ public class Agenda implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public enum Ensino {
+    public enum Ensino{
         FUNDAMENTAL,
         PRIMARIO;
     }

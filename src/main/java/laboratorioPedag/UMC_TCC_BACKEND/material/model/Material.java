@@ -36,6 +36,11 @@ public class Material {
         OUTROS
     }
 
+    public enum Status{
+        ATIVO,
+        DELETADO
+    }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -55,6 +60,8 @@ public class Material {
     private Categoria categoria;
     @Enumerated(EnumType.STRING)
     private Embalagem embalagem;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Override
     public String toString() {

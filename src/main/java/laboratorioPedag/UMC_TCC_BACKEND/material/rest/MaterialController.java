@@ -28,7 +28,7 @@ public class MaterialController {
 
     @PostMapping
     public Material saveOrUpdate(@RequestBody Material newMaterial) {
-        Validate.notNull(newMaterial, "O objeto da agenda não pode ser nulo");
+        Validate.notNull(newMaterial, "O objeto do material não pode ser nulo");
 
         if (newMaterial.getId() == null) {
             materialRepository.save(newMaterial);
@@ -38,9 +38,25 @@ public class MaterialController {
         return materialService.updateMaterial(newMaterial);
     }
 
-    @GetMapping
-    public Material get(@RequestParam Long materialId) {
-        Validate.notNull(materialId,"Id da agenda não pode ser nulo");
-        return materialRepository.findById(materialId).orElse(null);
+    @GetMapping("/{id}")
+    public Material get(@PathVariable Long id) {
+        Validate.notNull(id,"Id do material não pode ser nulo");
+        return materialRepository.findById(id).orElse(null);
     }
+
+    @GetMapping("/getByName/{materialNome}")
+    public Material getByName(@PathVariable String materialNome){
+        Validate.notNull(materialNome,"nome do não pode ser nulo");
+        return materialRepository.findByNome(materialNome);
+    }
+
+    @GetMapping("/getByClasse/{classe}")
+    public List<Material> getByClasse(@PathVariable String classe) throws Exception{
+        Material.Classe enumClasse = materialService.buildMaterialClasse(classe);
+        if (enumClasse == null){
+            throw new Exception("Classe não encontrada");
+        }
+        return materialRepository.findAllByClasse(enumClasse);
+    }
+
 }
