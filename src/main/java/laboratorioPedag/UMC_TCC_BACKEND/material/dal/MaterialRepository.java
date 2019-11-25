@@ -7,6 +7,6 @@ import java.util.List;
 
 
 public interface MaterialRepository extends JpaRepository<Material, Long> {
-    Material findByNome(String nome);
+    List<Material> findAllByNomeContains(String nome);
     List<Material> findAllByClasse(Material.Classe classe);
 }

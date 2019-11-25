@@ -45,9 +45,9 @@ public class MaterialController {
     }
 
     @GetMapping("/getByName/{materialNome}")
-    public Material getByName(@PathVariable String materialNome){
+    public List<Material> getByName(@PathVariable String materialNome){
         Validate.notNull(materialNome,"nome do não pode ser nulo");
-        return materialRepository.findByNome(materialNome);
+        return materialRepository.findAllByNomeContains(materialNome);
     }
 
     @GetMapping("/getByClasse/{classe}")
