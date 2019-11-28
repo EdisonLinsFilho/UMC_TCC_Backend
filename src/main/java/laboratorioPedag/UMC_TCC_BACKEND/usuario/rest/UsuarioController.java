@@ -77,4 +77,11 @@ public class UsuarioController {
         }
         return usuario;
     }
+
+    @GetMapping("/byAccess")
+    public List<Usuario> getUsuariosByAcesso(@RequestParam String acesso){
+        Usuario.Acesso acessoAux = usuarioService.buildAcesso(acesso);
+        Validate.notNull(acessoAux, "Acesso invalido");
+        return usuarioRepository.findAllByAcesso(acessoAux);
+    }
 }
