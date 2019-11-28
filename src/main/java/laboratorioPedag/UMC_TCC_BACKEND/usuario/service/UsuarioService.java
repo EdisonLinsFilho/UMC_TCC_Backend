@@ -4,6 +4,7 @@ import laboratorioPedag.UMC_TCC_BACKEND.usuario.dal.UsuarioRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.dto.UsuarioSimplesDto;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.model.Usuario;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -51,5 +52,19 @@ public class UsuarioService {
 
         UsuarioSimplesDto usuarioSimples = new UsuarioSimplesDto(usuario);
         return usuarioSimples;
+    }
+
+    public Usuario.Acesso buildAcesso(String acesso){
+        Validate.notNull(acesso, "Acesso não pode ser nulo.");
+        acesso = acesso.trim().toUpperCase();
+        if (acesso.equals("COORDENADOR")){
+            return Usuario.Acesso.COORDENADOR;
+        }else if(acesso.equals("MONITOR")){
+            return Usuario.Acesso.MONITOR;
+        }else if(acesso.equals("PROFESSOR")){
+            return Usuario.Acesso.PROFESSOR;
+        }else{
+            return null;
+        }
     }
 }
