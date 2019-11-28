@@ -2,6 +2,7 @@ package laboratorioPedag.UMC_TCC_BACKEND.material.service;
 import laboratorioPedag.UMC_TCC_BACKEND.material.dal.MaterialRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.material.model.Material;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 
 import static java.util.Optional.ofNullable;
@@ -15,6 +16,34 @@ public class MaterialService {
     public MaterialService(MaterialRepository materialRepository){
         this.materialRepository = materialRepository;
     }
+
+    public Boolean verificaQuantidade(Long materialId) {
+        Validate.notNull(materialId, "ID do material não pode ser nulo.");
+
+        Double quantidade = materialRepository.findQuantidadeByMaterial(materialId);
+        Validate.notNull(quantidade, "Material sem quantidade");
+
+        Double quantidadeMinima = materialRepository.findQuantidadeMinimaByMaterial(materialId);
+        Validate.notNull(quantidadeMinima, "Material sem quantidade minima");
+
+        if (quantidade < quantidadeMinima) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void darBaixaMaterialBaseadoNaAgenda(Double quantidadeUtilizada, Long materialId){
+        Validate.notNull(quantidadeUtilizada, "Quantidade utilizada deve ser informada");
+        Validate.notNull(quantidadeUtilizada, "ID do material deve ser informado");
+
+        Material material = materialRepository.findById(materialId).orElse(null);
+        Validate.notNull(material, "Material não encontrado");
+
+        material.setQuantidade(material.getQuantidade() - quantidadeUtilizada);
+        materialRepository.save(material);
+    }
+
     public Material updateMaterial(Material newMaterial) {
         Material material = materialRepository.findById(newMaterial.getId()).orElse(null);
 
