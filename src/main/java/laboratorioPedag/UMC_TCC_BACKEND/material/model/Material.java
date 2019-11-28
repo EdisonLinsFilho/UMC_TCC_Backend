@@ -49,9 +49,9 @@ public class Material {
     private String descricao;
 
     @NotNull
-    private double quantidade;
+    private Double quantidade;
     @NotNull
-    private double quantidadeMinima;
+    private Double quantidadeMinima;
     private Long dataLancamento;
 
     @Enumerated(EnumType.STRING)

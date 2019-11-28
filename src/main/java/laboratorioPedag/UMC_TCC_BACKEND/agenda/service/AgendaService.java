@@ -19,6 +19,9 @@ public class AgendaService {
     }
 
     public Agenda updateAgenda(Agenda newAgenda) {
+
+//      TODO implementar metodos da nova estrutura de baixa de material
+
         Agenda agenda = agendaRepository.findById(newAgenda.getId()).orElse(null);
 
         ofNullable(newAgenda.getCoordenator()).ifPresent(agenda :: setCoordenator);

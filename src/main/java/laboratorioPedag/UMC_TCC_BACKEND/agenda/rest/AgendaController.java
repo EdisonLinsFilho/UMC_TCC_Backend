@@ -2,6 +2,7 @@ package laboratorioPedag.UMC_TCC_BACKEND.agenda.rest;
 
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.dal.AgendaRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.model.Agenda;
+import laboratorioPedag.UMC_TCC_BACKEND.agenda.service.AgendaMateriaisService;
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.service.AgendaService;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.dal.UsuarioRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.model.Usuario;
@@ -18,12 +19,14 @@ public class AgendaController {
     private AgendaRepository agendaRepository;
     private AgendaService agendaService;
     private UsuarioRepository usuarioRepository;
+    private AgendaMateriaisService agendaMateriaisService;
 
     public AgendaController(AgendaRepository agendaRepository, AgendaService agendaService,
-                            UsuarioRepository usuarioRepository) {
+                            UsuarioRepository usuarioRepository, AgendaMateriaisService agendaMateriaisService) {
         this.agendaRepository = agendaRepository;
         this.agendaService = agendaService;
         this.usuarioRepository = usuarioRepository;
+        this.agendaMateriaisService = agendaMateriaisService;
     }
 
     @GetMapping("/getAll")
@@ -37,6 +40,7 @@ public class AgendaController {
         Validate.notNull(newAgenda, "O objeto da agenda não pode ser nulo");
 
         if (newAgenda.getId() == null) {
+//            TODO implementar metodos da nova estrutura de baixa de material
             agendaRepository.save(newAgenda);
             return newAgenda;
         }

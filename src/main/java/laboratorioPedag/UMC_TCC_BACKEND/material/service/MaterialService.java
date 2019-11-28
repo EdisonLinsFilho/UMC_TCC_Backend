@@ -1,8 +1,14 @@
 package laboratorioPedag.UMC_TCC_BACKEND.material.service;
+
+import com.sun.source.doctree.AttributeTree;
 import laboratorioPedag.UMC_TCC_BACKEND.material.dal.MaterialRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.material.model.Material;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.util.Optional.ofNullable;
 
@@ -12,25 +18,53 @@ public class MaterialService {
 
     private MaterialRepository materialRepository;
 
-    public MaterialService(MaterialRepository materialRepository){
+    public Boolean verificaQuantidade(Long materialId) {
+        Validate.notNull(materialId, "ID do material não pode ser nulo.");
+
+        Double quantidade = materialRepository.findQuantidadeByMaterial(materialId);
+        Validate.notNull(quantidade, "Material sem quantidade");
+
+        Double quantidadeMinima = materialRepository.findQuantidadeMinimaByMaterial(materialId);
+        Validate.notNull(quantidadeMinima, "Material sem quantidade minima");
+
+        if (quantidade < quantidadeMinima) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void darBaixaMaterialBaseadoNaAgenda(Double quantidadeUtilizada, Long materialId){
+        Validate.notNull(quantidadeUtilizada, "Quantidade utilizada deve ser informada");
+        Validate.notNull(quantidadeUtilizada, "ID do material deve ser informado");
+
+        Material material = materialRepository.findById(materialId).orElse(null);
+        Validate.notNull(material, "Material não encontrado");
+
+        material.setQuantidade(material.getQuantidade() - quantidadeUtilizada);
+        materialRepository.save(material);
+    }
+
+    public MaterialService(MaterialRepository materialRepository) {
         this.materialRepository = materialRepository;
     }
+
     public Material updateMaterial(Material newMaterial) {
         Material material = materialRepository.findById(newMaterial.getId()).orElse(null);
 
-        ofNullable(newMaterial.getNome()).ifPresent(material :: setNome);
+        ofNullable(newMaterial.getNome()).ifPresent(material::setNome);
         ofNullable(newMaterial.getDescricao()).ifPresent(material::setDescricao);
         ofNullable(newMaterial.getQuantidade()).ifPresent(material::setQuantidade);
         ofNullable(newMaterial.getQuantidadeMinima()).ifPresent(material::setQuantidadeMinima);
-        ofNullable(newMaterial.getDataLancamento()).ifPresent(material :: setDataLancamento);
-        ofNullable(newMaterial.getClasse()).ifPresent(material :: setClasse);
-        ofNullable(newMaterial.getCategoria()).ifPresent(material :: setCategoria);
+        ofNullable(newMaterial.getDataLancamento()).ifPresent(material::setDataLancamento);
+        ofNullable(newMaterial.getClasse()).ifPresent(material::setClasse);
+        ofNullable(newMaterial.getCategoria()).ifPresent(material::setCategoria);
         ofNullable(newMaterial.getEmbalagem()).ifPresent(material::setEmbalagem);
 
         return materialRepository.save(material);
     }
 
-    public Material.Classe buildMaterialClasse(String classe){
+    public Material.Classe buildMaterialClasse(String classe) {
         classe = classe.toUpperCase().trim();
         switch (classe) {
             case "CIENCIA":
