@@ -40,9 +40,26 @@ public class MaterialService {
         Material material = materialRepository.findById(materialId).orElse(null);
         Validate.notNull(material, "Material não encontrado");
 
-        material.setQuantidade(material.getQuantidade() - quantidadeUtilizada);
+        if(material.getCategoria().equals(Material.Categoria.CONSUMIVEL)) {
+            material.setQuantidade(material.getQuantidade() - quantidadeUtilizada);
+        }
+
         materialRepository.save(material);
     }
+
+//    public void updateBaixaMaterial(Double quantidadeUtilizada, Long materialId){
+//        Validate.notNull(quantidadeUtilizada, "Quantidade utilizada deve ser informada");
+//        Validate.notNull(quantidadeUtilizada, "ID do material deve ser informado");
+//
+//        Material material = materialRepository.findById(materialId).orElse(null);
+//        Validate.notNull(material, "Material não encontrado");
+//
+//        if(material.getCategoria().equals(Material.Categoria.CONSUMIVEL)) {
+//            material.setQuantidade(material.getQuantidade() - quantidadeUtilizada);
+//        }
+//
+//        materialRepository.save(material);
+//    }
 
     public Material updateMaterial(Material newMaterial) {
         Material material = materialRepository.findById(newMaterial.getId()).orElse(null);

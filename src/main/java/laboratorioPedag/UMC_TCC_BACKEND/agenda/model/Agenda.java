@@ -1,5 +1,6 @@
 package laboratorioPedag.UMC_TCC_BACKEND.agenda.model;
 
+import ch.qos.logback.core.status.Status;
 import laboratorioPedag.UMC_TCC_BACKEND.material.model.Material;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.model.Usuario;
 import lombok.Data;
@@ -19,6 +20,12 @@ public class Agenda implements Serializable {
         PRIMARIO;
     }
 
+    public enum Status{
+        CONCLUIDO,
+        EM_ANDAMENTO,
+        AGENDADA
+    }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -34,6 +41,8 @@ public class Agenda implements Serializable {
     private Long criancas;
     @Enumerated(EnumType.STRING)
     private Ensino tipoEnsino;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToMany
     private List<Responsavel> resposaveis;
@@ -43,5 +52,6 @@ public class Agenda implements Serializable {
 
     private Long data;
     private String descricao;
+
 
 }

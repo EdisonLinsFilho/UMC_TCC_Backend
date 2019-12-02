@@ -12,9 +12,9 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
     List<Material> findAllByNomeContains(String nome);
     List<Material> findAllByClasse(Material.Classe classe);
 
-    @Query("select quantidade from material where id = :id")
+    @Query(value = "select quantidade from material where id = :id", nativeQuery = true)
     Double findQuantidadeByMaterial(@Param("id") Long id);
 
-    @Query("select quantidade_minima from material where id = :id")
+    @Query(value = "select quantidade_minima from material where id = :id", nativeQuery = true)
     Double findQuantidadeMinimaByMaterial(@Param("id") Long id);
 }
