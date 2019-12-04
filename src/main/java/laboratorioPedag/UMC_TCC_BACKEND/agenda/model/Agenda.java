@@ -53,5 +53,4 @@ public class Agenda implements Serializable {
     private Long data;
     private String descricao;
 
-
 }

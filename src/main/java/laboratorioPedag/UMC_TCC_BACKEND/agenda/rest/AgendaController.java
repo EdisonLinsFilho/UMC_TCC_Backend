@@ -1,12 +1,11 @@
 package laboratorioPedag.UMC_TCC_BACKEND.agenda.rest;
 
-import laboratorioPedag.UMC_TCC_BACKEND.agenda.dal.AgendaMateriaisRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.dal.AgendaRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.dto.AgendaDto;
+import laboratorioPedag.UMC_TCC_BACKEND.agenda.dto.QuantidadeMaterialUtilizadoDto;
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.model.Agenda;
-import laboratorioPedag.UMC_TCC_BACKEND.agenda.model.AgendaMateriais;
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.service.AgendaService;
-import laboratorioPedag.UMC_TCC_BACKEND.material.model.Material;
+import laboratorioPedag.UMC_TCC_BACKEND.material.dal.MaterialRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.material.service.MaterialService;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.dal.UsuarioRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.model.Usuario;
@@ -26,16 +25,15 @@ public class AgendaController {
     private AgendaService agendaService;
     private UsuarioRepository usuarioRepository;
     private MaterialService materialService;
-    private AgendaMateriaisRepository agendaMateriaisRepository;
+    private MaterialRepository materialRepository;
 
     public AgendaController(AgendaRepository agendaRepository, AgendaService agendaService,
-                            UsuarioRepository usuarioRepository, MaterialService materialService,
-                            AgendaMateriaisRepository agendaMateriaisRepository) {
+                            UsuarioRepository usuarioRepository, MaterialService materialService){
         this.agendaRepository = agendaRepository;
         this.agendaService = agendaService;
         this.usuarioRepository = usuarioRepository;
         this.materialService = materialService;
-        this.agendaMateriaisRepository = agendaMateriaisRepository;
+        this.materialRepository = materialRepository;
     }
 
     @GetMapping("/getAll")
@@ -45,37 +43,30 @@ public class AgendaController {
     }
 
     @PostMapping
-    public Agenda saveOrUpdate(@RequestBody AgendaDto newAgenda) {
-        Validate.notNull(newAgenda, "O objeto da agenda não pode ser nulo");
+    public void saveOrUpdate(@RequestBody AgendaDto newAgenda) throws Exception {
+        Validate.notNull(newAgenda, "O DTO da agenda não pode ser nulo");
         Agenda agenda = newAgenda.toAgenda();
-        AgendaMateriais agendaMateriais = new AgendaMateriais();
 
         if (newAgenda.id == null) {
 
-            for (int i=0; i <= newAgenda.materiais.size(); i++){
-
-                if (!materialService.verificaQuantidade(newAgenda.materiais.get(i).getId())){
-                    log.error("Material: " + newAgenda.materiais.get(i).getNome() + "Não tem quantidade suficiente");
-                    continue;
-                }
-                agendaMateriais.setQuantidadeUtilizada(newAgenda.quantidadeMaterialUtilizadoDto.get(i).QuantidadeUtilizada);
-                materialService.darBaixaMaterialBaseadoNaAgenda(newAgenda.quantidadeMaterialUtilizadoDto.get(i).QuantidadeUtilizada,
-                        newAgenda.quantidadeMaterialUtilizadoDto.get(i).materialId);
+            if (newAgenda.quantidadeMaterialUtilizadoDto.isEmpty()){
+                log.warn("Agenda sem materiais");
+            }
+            
+            for (QuantidadeMaterialUtilizadoDto dto : newAgenda.quantidadeMaterialUtilizadoDto) {
+                materialService.verificaQuantidade(dto.materialId);
+                materialService.darBaixaMaterialBaseadoNaAgenda(newAgenda.quantidadeMaterialUtilizadoDto);
             }
 
-            agendaMateriais.setAgenda(agenda);
-            agendaMateriais.setMateriais(agenda.getMateriais());
-            agendaMateriaisRepository.save(agendaMateriais);
             agendaRepository.save(agenda);
-            return agenda;
+            return;
         }
-
-        return agendaService.updateAgenda(newAgenda);
+        agendaService.updateAgenda(newAgenda);
     }
 
     @GetMapping("/{agendaId}")
     public Agenda get(@PathVariable Long agendaId) throws Exception {
-        Agenda agenda = agendaRepository.findById(agendaId).orElse(null);                                         
+        Agenda agenda = agendaRepository.findById(agendaId).orElse(null);
 
         if (agenda == null) {
             throw new Exception("Agenda não encontrada");
@@ -99,7 +90,7 @@ public class AgendaController {
     public List<Agenda> getByData(@PathVariable String nomeProfessor) throws Exception {
 
         Usuario professor = usuarioRepository.findByNome(nomeProfessor);
-        if (professor == null){
+        if (professor == null) {
             throw new Exception("Professor não encontrado.");
         }
 

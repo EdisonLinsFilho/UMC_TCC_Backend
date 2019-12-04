@@ -20,8 +20,8 @@ public class AgendaDto {
     public Agenda.Status status;
 
     public List<Responsavel> resposaveis;
-    public List<Material> materiais;
     public List<QuantidadeMaterialUtilizadoDto> quantidadeMaterialUtilizadoDto;
+    public List<Material> materiais;
 
     public Long data;
     public String descricao;
@@ -35,10 +35,10 @@ public class AgendaDto {
         this.criancas = agenda.getCriancas();
         this.tipoEnsino = agenda.getTipoEnsino();
         this.resposaveis = agenda.getResposaveis();
-        this.materiais = agenda.getMateriais();
         this.data = agenda.getData();
         this.descricao = agenda.getDescricao();
         this.status = agenda.getStatus();
+        this.materiais = agenda.getMateriais();
     }
 
     public AgendaDto() {
@@ -56,7 +56,6 @@ public class AgendaDto {
         agenda.setTipoEnsino(this.tipoEnsino);
         agenda.setStatus(this.status);
         agenda.setResposaveis(this.resposaveis);
-        agenda.setMateriais(this.materiais);
         agenda.setData(this.data);
         agenda.setDescricao(this.descricao);
 

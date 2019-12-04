@@ -1,9 +1,12 @@
 package laboratorioPedag.UMC_TCC_BACKEND.material.service;
+import laboratorioPedag.UMC_TCC_BACKEND.agenda.dto.QuantidadeMaterialUtilizadoDto;
 import laboratorioPedag.UMC_TCC_BACKEND.material.dal.MaterialRepository;
 import laboratorioPedag.UMC_TCC_BACKEND.material.model.Material;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static java.util.Optional.ofNullable;
 
@@ -32,19 +35,21 @@ public class MaterialService {
 
         return true;
     }
+    public void darBaixaMaterialBaseadoNaAgenda(List<QuantidadeMaterialUtilizadoDto> quantidadeMaterialUtilizadoDto){
 
-    public void darBaixaMaterialBaseadoNaAgenda(Double quantidadeUtilizada, Long materialId){
-        Validate.notNull(quantidadeUtilizada, "Quantidade utilizada deve ser informada");
-        Validate.notNull(quantidadeUtilizada, "ID do material deve ser informado");
+        for (QuantidadeMaterialUtilizadoDto dto : quantidadeMaterialUtilizadoDto) {
+            Validate.notNull(dto.quantidadeUtilizada, "Quantidade utilizada deve ser informada");
+            Validate.notNull(dto.materialId, "ID do material deve ser informado");
 
-        Material material = materialRepository.findById(materialId).orElse(null);
-        Validate.notNull(material, "Material não encontrado");
+            Material material = materialRepository.findById(dto.materialId).orElse(null);
+            Validate.notNull(material, "Material não encontrado");
 
-        if(material.getCategoria().equals(Material.Categoria.CONSUMIVEL)) {
-            material.setQuantidade(material.getQuantidade() - quantidadeUtilizada);
+            if (material.getCategoria().equals(Material.Categoria.CONSUMIVEL)) {
+                material.setQuantidade(material.getQuantidade() - dto.quantidadeUtilizada);
+            }
+
+            materialRepository.save(material);
         }
-
-        materialRepository.save(material);
     }
 
 //    public void updateBaixaMaterial(Double quantidadeUtilizada, Long materialId){
@@ -81,8 +86,6 @@ public class MaterialService {
         switch (classe) {
             case "CIENCIA":
                 return Material.Classe.CIENCIA;
-            case "CONSUMO":
-                return Material.Classe.CONSUMO;
             case "DESENVOLVIMENTOCOGNITIVO":
                 return Material.Classe.DESENVOLVIMENTO_COGNITIVO;
             case "EDUCACAOFISICA":
@@ -100,4 +103,6 @@ public class MaterialService {
                 return null;
         }
     }
+
+
 }

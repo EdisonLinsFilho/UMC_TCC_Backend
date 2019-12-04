@@ -22,8 +22,12 @@ public class AgendaService {
         this.materialService = materialService;
     }
 
-    public Agenda updateAgenda(AgendaDto newAgenda) {
+    public Agenda updateAgenda(AgendaDto newAgenda) throws Exception {
         Agenda agenda = agendaRepository.findById(newAgenda.id).orElse(null);
+
+        if (!newAgenda.materiais.equals(agenda.getMateriais())){
+            throw new Exception("Não é permitido alteração de materiais");
+        }
 
         ofNullable(newAgenda.coordenator).ifPresent(agenda :: setCoordenator);
         ofNullable(newAgenda.monitor).ifPresent(agenda :: setMonitor);
@@ -32,17 +36,6 @@ public class AgendaService {
         ofNullable(newAgenda.criancas).ifPresent(agenda :: setCriancas);
         ofNullable(newAgenda.tipoEnsino).ifPresent(agenda::setTipoEnsino);
         ofNullable(newAgenda.resposaveis).ifPresent(agenda::setResposaveis);
-//        for (int i=0; i <= newAgenda.materiais.size(); i++){
-//
-//            if (!materialService.verificaQuantidade(newAgenda.materiais.get(i).getId())){
-//                log.error("Material: " + newAgenda.materiais.get(i).getNome() + "Não tem quantidade suficiente");
-//                continue;
-//            }
-//            materialService.darBaixaMaterialBaseadoNaAgenda(newAgenda.quantidadeMaterialUtilizadoDto.get(i).QuantidadeUtilizada,
-//                    newAgenda.quantidadeMaterialUtilizadoDto.get(i).materialId);
-//        }
-//        ofNullable(newAgenda.materiais).ifPresent(agenda::setMateriais);
-
         ofNullable(newAgenda.data).ifPresent(agenda::setData);
         ofNullable(newAgenda.descricao).ifPresent(agenda::setDescricao);
 
