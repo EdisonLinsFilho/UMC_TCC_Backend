@@ -5,14 +5,14 @@ import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Data
 @Entity
-public class Material {
+public class Material implements Serializable {
 
     public enum Classe{
         CIENCIA,
-        CONSUMO,
         DESENVOLVIMENTO_COGNITIVO,
         EDUCACAO_FISICA,
         LINGUA_PORTUGUESA,
@@ -45,6 +45,7 @@ public class Material {
     @Id
     private Long id;
 
+    @Column(unique = true)
     private String nome;
     private String descricao;
 

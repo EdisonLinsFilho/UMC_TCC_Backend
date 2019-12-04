@@ -6,12 +6,14 @@ import laboratorioPedag.UMC_TCC_BACKEND.material.service.MaterialService;
 import org.apache.commons.lang3.Validate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/material")
 public class MaterialController {
 
+    private Calendar calendar;
     private MaterialRepository materialRepository;
     private MaterialService materialService;
 
@@ -31,6 +33,7 @@ public class MaterialController {
         Validate.notNull(newMaterial, "O objeto do material não pode ser nulo");
 
         if (newMaterial.getId() == null) {
+            newMaterial.setDataLancamento(calendar.getTimeInMillis());
             materialRepository.save(newMaterial);
             return newMaterial;
         }
