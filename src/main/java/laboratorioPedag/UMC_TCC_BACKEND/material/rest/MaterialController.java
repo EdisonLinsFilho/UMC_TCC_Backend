@@ -13,7 +13,6 @@ import java.util.List;
 @RequestMapping("/api/v1/material")
 public class MaterialController {
 
-    private Calendar calendar;
     private MaterialRepository materialRepository;
     private MaterialService materialService;
 
@@ -33,7 +32,7 @@ public class MaterialController {
         Validate.notNull(newMaterial, "O objeto do material não pode ser nulo");
 
         if (newMaterial.getId() == null) {
-            newMaterial.setDataLancamento(calendar.getTimeInMillis());
+            newMaterial.setDataLancamento(System.currentTimeMillis());
             materialRepository.save(newMaterial);
             return newMaterial;
         }
