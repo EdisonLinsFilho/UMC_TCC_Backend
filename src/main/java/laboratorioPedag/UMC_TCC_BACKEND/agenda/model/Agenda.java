@@ -21,9 +21,8 @@ public class Agenda implements Serializable {
     }
 
     public enum Status{
-        CONCLUIDO,
-        EM_ANDAMENTO,
-        AGENDADA
+        ACTIVE,
+        INACTIVE
     }
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

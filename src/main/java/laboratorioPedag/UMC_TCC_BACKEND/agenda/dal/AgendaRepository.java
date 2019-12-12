@@ -13,4 +13,5 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
     List<Agenda> findAllByDateRange(@Param("startDate") Long startDate, @Param("endDate") Long endDate);
     Agenda findByData(Long data);
     List<Agenda> findByProfessor(Usuario professor);
+    List<Agenda> findAllByStatus(Agenda.Status status);
 }
