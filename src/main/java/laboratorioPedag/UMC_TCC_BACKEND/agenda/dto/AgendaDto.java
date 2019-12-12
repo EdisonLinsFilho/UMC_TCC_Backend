@@ -49,7 +49,7 @@ public class AgendaDto {
 
         agenda.setId(this.id);
         agenda.setCoordenator(this.coordenator);
-        agenda.setCoordenator(this.monitor);
+        agenda.setMonitor(this.monitor);
         agenda.setProfessor(this.professor);
         agenda.setEscola(this.escola);
         agenda.setCriancas(this.criancas);
@@ -58,6 +58,7 @@ public class AgendaDto {
         agenda.setResposaveis(this.resposaveis);
         agenda.setData(this.data);
         agenda.setDescricao(this.descricao);
+        agenda.setMateriais(this.materiais);
 
         return agenda;
 

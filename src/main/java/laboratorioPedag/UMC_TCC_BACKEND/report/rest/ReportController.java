@@ -27,8 +27,8 @@ public class ReportController {
     }
 
     @PostMapping
-    public ResponseEntity<?> toExcel(@RequestParam Long startDate,
-                                     @RequestParam Long endDate,
+    public ResponseEntity<?> toExcel(@RequestParam(required = false) Long startDate,
+                                     @RequestParam(required = false) Long endDate,
                                      @RequestParam String type) throws Exception {
 
         Workbook workbook = reportService.modificadorDeReport(type, startDate, endDate);
