@@ -42,6 +42,13 @@ public class AgendaController {
         return agendas;
     }
 
+    @GetMapping("/getAll/{status}")
+    public List<Agenda> getAll(@PathVariable String status) throws Exception {
+        Agenda.Status realStatus = agendaService.buildStatus(status);
+        List<Agenda> agendas = agendaRepository.findAllByStatus(realStatus);
+        return agendas;
+    }
+
     @PostMapping
     public void saveOrUpdate(@RequestBody AgendaDto newAgenda) throws Exception {
         Validate.notNull(newAgenda, "O DTO da agenda não pode ser nulo");
@@ -87,7 +94,7 @@ public class AgendaController {
     }
 
     @GetMapping("/getByProfessor/{nomeProfessor}")
-    public List<Agenda> getByData(@PathVariable String nomeProfessor) throws Exception {
+    public List<Agenda> getByProfessor(@PathVariable String nomeProfessor) throws Exception {
 
         Usuario professor = usuarioRepository.findByNome(nomeProfessor);
         if (professor == null) {

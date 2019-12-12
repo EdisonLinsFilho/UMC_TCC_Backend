@@ -5,6 +5,7 @@ import laboratorioPedag.UMC_TCC_BACKEND.agenda.dto.AgendaDto;
 import laboratorioPedag.UMC_TCC_BACKEND.agenda.model.Agenda;
 import laboratorioPedag.UMC_TCC_BACKEND.material.service.MaterialService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 
 
@@ -40,5 +41,17 @@ public class AgendaService {
         ofNullable(newAgenda.descricao).ifPresent(agenda::setDescricao);
 
         return agendaRepository.save(agenda);
+    }
+
+    public Agenda.Status buildStatus(String status) throws Exception {
+        Validate.notNull(status, "Status deve ser informado");
+
+        if (status.toUpperCase().equals("ACTIVE")){
+            return Agenda.Status.ACTIVE;
+        }else if(status.toUpperCase().equals("INACTIVE")){
+            return Agenda.Status.INACTIVE;
+        }else{
+            throw new Exception("STATUS INVALIDO");
+        }
     }
 }
