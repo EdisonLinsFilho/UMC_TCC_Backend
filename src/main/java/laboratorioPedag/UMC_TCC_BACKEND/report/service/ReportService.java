@@ -155,7 +155,7 @@ public class ReportService {
             row.createCell(6).setCellValue(agenda.getTipoEnsino() != null ? agenda.getTipoEnsino().toString() : "");
             row.createCell(7).setCellValue(agenda.getResposaveis() != null ? listaToString(agenda, "responsavel") : " ");
             row.createCell(8).setCellValue(agenda.getDescricao() != null ? agenda.getDescricao() : "");
-//            row.createCell(9).setCellValue(agenda.getMateriais() != null ? listaToString(agenda, "material") : " ");
+            row.createCell(9).setCellValue(agenda.getMateriais() != null ? listaToString(agenda, "material") : " ");
 
             rowNum++;
         }
@@ -175,13 +175,13 @@ public class ReportService {
             }
             return lista;
         }else if(objeto.equals("material")){
-//            if (agenda.getMateriais() == null) {
-//                log.error("Agenda sem materiais cadastrados");
-//                return "";
-//            }
-//            for (Material material : agenda.getMateriais()) {
-//                lista = lista + material.getNome() + ","; //Atualizar o banco para funcionar
-//            }
+            if (agenda.getMateriais() == null) {
+                log.error("Agenda sem materiais cadastrados");
+                return "";
+            }
+            for (Material material : agenda.getMateriais()) {
+                lista = lista + material.getNome() + ","; //Atualizar o banco para funcionar
+            }
             return lista;
         }else {
             log.error("tipo inexistente");
