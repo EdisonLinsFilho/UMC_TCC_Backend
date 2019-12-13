@@ -36,4 +36,5 @@ dependencies {
 	compile 'org.apache.poi:poi-scratchpad:3.13'
 	compile 'org.apache.commons:commons-lang3:3.4'
 	compile 'org.apache.commons:commons-text:1.2'
+	compile('org.springframework.boot:spring-boot-starter-mail')
 }
