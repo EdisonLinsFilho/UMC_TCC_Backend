@@ -49,6 +49,14 @@ public class AgendaController {
         return agendas;
     }
 
+    @GetMapping("/get-next")
+    public List<Agenda> getNext(){
+        Long now = System.currentTimeMillis();
+        Long week = now + 604800000L;
+
+        return agendaRepository.findAllByDateRange(now, week);
+    }
+
     @PostMapping
     public void saveOrUpdate(@RequestBody AgendaDto newAgenda) throws Exception {
         Validate.notNull(newAgenda, "O DTO da agenda não pode ser nulo");
