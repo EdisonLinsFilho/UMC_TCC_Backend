@@ -12,5 +12,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
     Usuario findByNome(String nome);
     List<Usuario> findAllByAcesso(Usuario.Acesso acesso);
     List<Usuario> findAllByStatus(Usuario.Status status);
+    List<Usuario> findAllByAcessoAndStatus(Usuario.Acesso acesso, Usuario.Status status);
 
 }
