@@ -5,6 +5,7 @@ import laboratorioPedag.UMC_TCC_BACKEND.usuario.dto.UsuarioSimplesDto;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.model.Usuario;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.Validate;
+import org.apache.poi.hssf.record.common.FtrHeader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -65,6 +66,16 @@ public class UsuarioService {
             return Usuario.Acesso.PROFESSOR;
         }else{
             return null;
+        }
+    }
+
+    public Usuario.Status buildStatus(String status) throws Exception {
+        if (status.equals("active")){
+            return Usuario.Status.ACTIVE;
+        }else if (status.equals("inactive")){
+            return Usuario.Status.INACTIVE;
+        }else{
+            throw new Exception("Status invalido");
         }
     }
 }

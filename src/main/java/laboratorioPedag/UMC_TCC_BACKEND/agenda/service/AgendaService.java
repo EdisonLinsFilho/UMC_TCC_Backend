@@ -40,6 +40,7 @@ public class AgendaService {
         ofNullable(newAgenda.tipoEnsino).ifPresent(agenda::setTipoEnsino);
         ofNullable(newAgenda.resposaveis).ifPresent(agenda::setResposaveis);
         ofNullable(newAgenda.data).ifPresent(agenda::setData);
+        ofNullable(newAgenda.status).ifPresent(agenda::setStatus);
         ofNullable(newAgenda.descricao).ifPresent(agenda::setDescricao);
 
         return agendaRepository.save(agenda);
