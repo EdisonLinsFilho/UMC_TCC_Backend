@@ -5,8 +5,8 @@ import laboratorioPedag.UMC_TCC_BACKEND.usuario.dto.LoginDto;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.dto.UsuarioSimplesDto;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.model.Usuario;
 import laboratorioPedag.UMC_TCC_BACKEND.usuario.service.UsuarioService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.Validate;
-import laboratorioPedag.UMC_TCC_BACKEND.sendMail.SendMail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -94,27 +94,30 @@ public class UsuarioController {
     @PostMapping("/sendMail")
     public String sendMail(@RequestParam String email){ /*throws AddressException, MessagingException, IOException*/
         Random random = new Random();
+        int a;
         String[] specialCaracters = {"'","!","@","#","$","%","&","*",".",",","/","-","_","+"};
-        String[] caracters = {"0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i"
-                            ,"j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A"
-                            ,"B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S"
-                            ,"T","U","V","W","X","Y","Z"};
+        String[] numericCaracters = {"0","1","2","3","4","5","6","7","8","9"};
+        String[] caracters = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r"
+                            ,"s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J"
+                            ,"K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
         String newPassword = "";
 
         for ( int i = 0; i < 7; i++){
-            int a = random.nextInt(caracters.length);
+            a = random.nextInt(caracters.length);
             newPassword += caracters[a];
         }
-        newPassword += random.nextInt(specialCaracters.length);
+        a = random.nextInt(specialCaracters.length);
+        newPassword += specialCaracters[a];
+        a = random.nextInt(numericCaracters.length);
+        newPassword += numericCaracters[a];
 
         Usuario user = usuarioRepository.findByEmail(email);
-        user.setSenha(newPassword);
+        user.setSenha(newPassword);//(new BCryptPasswordEncoder().encode(RandomStringUtils.random(15)));
         usuarioService.updateUsuario(user);
-
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject("Alteração de senha");
-        message.setText("Olá " + user.getNome() + ", você solicitou uma alteração de senha. \nAqui está sua nova senha de acesso: \n"
-                + newPassword);
+        message.setText("Olá " + user.getNome() + ", você solicitou uma alteração de senha. \n\nAqui está sua nova senha de acesso: \n\n"
+                + newPassword + "\n\nSe Não foi você que solicitou, Favor, Entre em contato com algum coordenador da UMC.");
         message.setTo(email);
         message.setFrom("UMC");
 
