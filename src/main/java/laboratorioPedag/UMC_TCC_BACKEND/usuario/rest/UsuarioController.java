@@ -61,7 +61,6 @@ public class UsuarioController {
     public Usuario saveOrUpdate(@RequestBody Usuario newUsuario) {
         Validate.notNull(newUsuario, "O objeto do usuario não pode ser nulo");
 
-
         if (newUsuario.getId() == null) {
             usuarioRepository.save(newUsuario);
             return newUsuario;

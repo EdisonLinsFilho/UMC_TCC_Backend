@@ -17,4 +17,6 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
 
     @Query(value = "select quantidade_minima from material where id = :id", nativeQuery = true)
     Double findQuantidadeMinimaByMaterial(@Param("id") Long id);
+
+    List<Material> findAllByStatus(Material.Status status);
 }
