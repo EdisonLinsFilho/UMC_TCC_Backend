@@ -69,13 +69,15 @@ public class UsuarioService {
         }
     }
 
-    public Usuario.Status buildStatus(String status) throws Exception {
-        if (status.equals("active")){
+    public Usuario.Status buildStatus(String status){
+        Validate.notNull(status, "Status não pode ser nulo.");
+        status = status.trim().toUpperCase();
+        if (status.equals("ACTIVE")){
             return Usuario.Status.ACTIVE;
-        }else if (status.equals("inactive")){
+        }else if(status.equals("INACTIVE")){
             return Usuario.Status.INACTIVE;
         }else{
-            throw new Exception("Status invalido");
+            return null;
         }
     }
 }

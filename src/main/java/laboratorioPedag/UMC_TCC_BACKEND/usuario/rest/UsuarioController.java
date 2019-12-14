@@ -92,11 +92,13 @@ public class UsuarioController {
         return usuario;
     }
 
-    @GetMapping("/byAccess")
-    public List<Usuario> getUsuariosByAcesso(@RequestParam String acesso) {
+    @GetMapping(value = "/byAccess/{acesso}/{status}")
+    public List<Usuario> getUsuariosByAcesso(@PathVariable String acesso, @PathVariable String status) {
         Usuario.Acesso acessoAux = usuarioService.buildAcesso(acesso);
         Validate.notNull(acessoAux, "Acesso invalido");
-        return usuarioRepository.findAllByAcesso(acessoAux);
+        Usuario.Status statusAux = usuarioService.buildStatus(status);
+        Validate.notNull(statusAux, "Status invalido");
+        return usuarioRepository.findAllByAcessoAndStatus(acessoAux, statusAux);
     }
 
     @PostMapping("/sendMail")
