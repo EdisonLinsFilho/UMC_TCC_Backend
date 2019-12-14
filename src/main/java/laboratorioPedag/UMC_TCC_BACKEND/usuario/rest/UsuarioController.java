@@ -35,6 +35,15 @@ public class UsuarioController {
         return usuarios;
     }
 
+    @GetMapping("/getAll/{status}")
+    public List<Usuario> getAll(@PathVariable String status) throws Exception {
+
+        Usuario.Status realStatus = usuarioService.buildStatus(status);
+        List<Usuario> usuarios = usuarioRepository.findAllByStatus(realStatus);
+
+        return usuarios;
+    }
+
     @GetMapping("/getByName/{name}")
     public List<Usuario> getName(@PathVariable String name) {
         List<Usuario> usuarios = usuarioRepository.findAllByNomeContains(name);

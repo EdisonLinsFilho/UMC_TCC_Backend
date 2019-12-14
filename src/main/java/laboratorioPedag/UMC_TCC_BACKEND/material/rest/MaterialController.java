@@ -27,6 +27,23 @@ public class MaterialController {
         return agendas;
     }
 
+    @PostMapping("/change-status/{status}/{id}")
+    public void changeStatus(@PathVariable String status, @PathVariable Long id) throws Exception {
+        Material material = materialRepository.findById(id).orElse(null);
+        Validate.notNull(material, "Material não encontrado");
+
+        if (status.toUpperCase().equals("ATIVO")){
+            material.setStatus(Material.Status.ATIVO);
+            materialRepository.save(material);
+        }else if (status.toUpperCase().equals("DELETADO")){
+            material.setStatus(Material.Status.DELETADO);
+            materialRepository.save(material);
+        }else {
+            throw new Exception("Status invalido");
+        }
+
+    }
+
     @PostMapping
     public Material saveOrUpdate(@RequestBody Material newMaterial) {
         Validate.notNull(newMaterial, "O objeto do material não pode ser nulo");
