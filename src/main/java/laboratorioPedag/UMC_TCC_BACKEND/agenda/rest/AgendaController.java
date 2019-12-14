@@ -55,7 +55,35 @@ public class AgendaController {
         Long week = now + 604800000L;
 
         return agendaRepository.findAllByDateRange(now, week);
+
     }
+
+    @GetMapping("/get-by-day/{timestamp}")
+    public List<Agenda> getByDay(@PathVariable Long timestamp){
+
+        Calendar firstTimeToday = Calendar.getInstance();
+        Calendar lastTimeToday = Calendar.getInstance();
+
+        firstTimeToday.setTime(new Date(System.currentTimeMillis())); // Now use today date.
+        lastTimeToday.setTime(new Date(System.currentTimeMillis())); // Now use today date.
+
+        firstTimeToday.setTimeInMillis(timestamp);
+        lastTimeToday.setTimeInMillis(timestamp);
+
+        firstTimeToday.set(Calendar.HOUR_OF_DAY, 0);
+        firstTimeToday.set(Calendar.MINUTE, 01);
+        firstTimeToday.set(Calendar.SECOND, 0);
+        firstTimeToday.set(Calendar.MILLISECOND, 0);
+
+        lastTimeToday.set(Calendar.HOUR_OF_DAY, 23);
+        lastTimeToday.set(Calendar.MINUTE, 59);
+        lastTimeToday.set(Calendar.SECOND, 0);
+        lastTimeToday.set(Calendar.MILLISECOND, 0);
+
+        return agendaRepository.findAllByDateRange(firstTimeToday.getTimeInMillis(), lastTimeToday.getTimeInMillis());
+
+    }
+
 
     @PostMapping
     public void saveOrUpdate(@RequestBody AgendaDto newAgenda) throws Exception {
@@ -82,17 +110,6 @@ public class AgendaController {
     @GetMapping("/{agendaId}")
     public Agenda get(@PathVariable Long agendaId) throws Exception {
         Agenda agenda = agendaRepository.findById(agendaId).orElse(null);
-
-        if (agenda == null) {
-            throw new Exception("Agenda não encontrada");
-        }
-
-        return agenda;
-    }
-
-    @GetMapping("/getByData/{data}")
-    public Agenda getByData(@PathVariable Long data) throws Exception {
-        Agenda agenda = agendaRepository.findByData(data);
 
         if (agenda == null) {
             throw new Exception("Agenda não encontrada");
