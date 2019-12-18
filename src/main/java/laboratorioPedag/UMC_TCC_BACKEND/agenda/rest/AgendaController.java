@@ -90,6 +90,9 @@ public class AgendaController {
         Validate.notNull(newAgenda, "O DTO da agenda não pode ser nulo");
         Agenda agenda = newAgenda.toAgenda();
 
+        agendaService.verifyAgenda(agenda);
+
+
         if (newAgenda.id == null) {
 
             if (newAgenda.quantidadeMaterialUtilizadoDto.isEmpty()){

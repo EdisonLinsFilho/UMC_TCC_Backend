@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.Calendar;
+import java.util.List;
 
 import static java.util.Optional.ofNullable;
 
@@ -23,6 +24,23 @@ public class AgendaService {
     public AgendaService(AgendaRepository agendaRepository, MaterialService materialService){
         this.agendaRepository = agendaRepository;
         this.materialService = materialService;
+    }
+
+    public boolean verifyAgenda(Agenda agenda) throws Exception {
+        Long now = System.currentTimeMillis();
+
+        if (agenda.getData() < now){
+            throw new Exception("Agenda com data menor que a atual");
+        }
+
+        Long oneHourRange = agenda.getData() + 3600000L;
+        List<Agenda> agendas = agendaRepository.findAllByDateRange(agenda.getData(), oneHourRange);
+
+        if (!agendas.isEmpty()){
+            throw new Exception("Horario já reservado");
+        }
+
+        return true;
     }
 
     public Agenda updateAgenda(AgendaDto newAgenda) throws Exception {
